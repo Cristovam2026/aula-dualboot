@@ -16,7 +16,14 @@ document.querySelectorAll(".nav-item").forEach(item => {
     document.querySelectorAll(".tab-content").forEach(s => s.classList.remove("active"));
     document.getElementById("tab-" + tab).classList.add("active");
     
-    const titles = { overview: "O que é Dualboot?", disk: "Particionamento", bios: "Simulador de BIOS", grub: "O Bootloader (GRUB)", quiz: "Quiz Final" };
+    const titles = {
+      overview:   "O que é Dualboot?",
+      importance: "Por que usar Dualboot?",
+      disk:       "Particionamento",
+      bios:       "Simulador de BIOS",
+      grub:       "O Bootloader (GRUB)",
+      quiz:       "Quiz Final"
+    };
     document.getElementById("headerTitle").textContent = titles[tab];
   });
 });
@@ -98,6 +105,51 @@ function checkMito(ans) {
   }
 }
 renderMitos();
+
+// ─── ATIVIDADE: Qual sistema usar? ───
+const impQuestions = [
+  { text: "Quero configurar um servidor web para hospedar um site.", ans: "linux" },
+  { text: "Preciso usar o Microsoft Word para editar um trabalho.", ans: "windows" },
+  { text: "Vou aprender a usar Docker e containers.", ans: "linux" },
+  { text: "Quero jogar um game que só tem versão para Windows.", ans: "windows" },
+  { text: "Estou estudando Ethical Hacking e preciso do Kali Linux.", ans: "linux" },
+];
+let impScore = 0, impAnswered = 0;
+
+function initImpAct() {
+  const body = document.getElementById("actBody-importance");
+  if (!body) return;
+  body.innerHTML = impQuestions.map((q, i) => `
+    <div class="imp-act-item" id="imp-item-${i}">
+      <span class="imp-act-text">${i+1}. ${q.text}</span>
+      <div class="imp-act-btns">
+        <button class="win-btn" onclick="checkImp(${i}, 'windows', this)">🪟 Windows</button>
+        <button class="lin-btn" onclick="checkImp(${i}, 'linux', this)">🐧 Linux</button>
+      </div>
+    </div>
+  `).join('');
+}
+function checkImp(idx, ans, btn) {
+  const q = impQuestions[idx];
+  const item = document.getElementById(`imp-item-${idx}`);
+  item.querySelectorAll("button").forEach(b => b.disabled = true);
+  if (ans === q.ans) { btn.classList.add("correct"); impScore++; }
+  else {
+    btn.classList.add("wrong");
+    item.querySelectorAll("button:not(.wrong)").forEach(b => b.classList.add("correct"));
+  }
+  impAnswered++;
+  if (impAnswered === impQuestions.length) {
+    setTimeout(() => {
+      document.getElementById("actBody-importance").innerHTML += `
+        <div class="act-feedback correct" style="text-align:center; margin-top:15px; font-size:.95rem;">
+          Resultado: <strong>${impScore} / ${impQuestions.length}</strong> — ${impScore >= 4 ? 'Excelente domínio!' : 'Continue praticando!'}
+        </div>`;
+      if (impScore >= 4) markDone("importance");
+    }, 400);
+  }
+}
+initImpAct();
 
 // ─── ATIVIDADE 2: Particionamento ───
 let diskState = { win: 500, free: 0, linux: 0 };
