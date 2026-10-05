@@ -1,0 +1,159 @@
+/* Dualboot Lab — Estilos (Dark Theme) */
+
+:root {
+  --bg-base: #0f111a;
+  --bg-elevated: #1a1d2d;
+  --bg-card: #202436;
+  --border: #3b4261;
+  --border-hover: #545c82;
+
+  --accent-win: #3b82f6; /* Blue for Windows */
+  --accent-lin: #f59e0b; /* Orange/Yellow for Linux/Ubuntu */
+  --accent-lin2: #8b5cf6; /* Purple */
+  
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --font-ui: 'Inter', sans-serif;
+  --font-code: 'Fira Code', monospace;
+
+  --sidebar-w: 248px;
+  --radius: 8px;
+  --radius-lg: 16px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-ui); background: var(--bg-base); color: var(--text-primary); display: flex; min-height: 100vh; overflow-x: hidden; }
+
+/* ─── SIDEBAR & HEADER (Similar structure, themed) ─── */
+#sidebar { width: var(--sidebar-w); background: var(--bg-elevated); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; height: 100vh; z-index: 100; transition: transform .3s; }
+.sidebar-brand { display: flex; align-items: center; gap: 12px; padding: 20px 18px; border-bottom: 1px solid var(--border); }
+.brand-icon { font-size: 1.8rem; background: #292e42; border-radius: 8px; padding: 6px; }
+.brand-title { font-weight: 700; font-size: 1rem; color: #fff; }
+.brand-sub { font-size: .7rem; color: var(--text-muted); }
+
+.nav-list { list-style: none; padding: 12px 8px; flex: 1; }
+.nav-item { display: flex; align-items: center; gap: 9px; padding: 10px 12px; border-radius: 8px; cursor: pointer; font-size: .86rem; color: var(--text-secondary); margin-bottom: 3px; }
+.nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+.nav-item.active { background: linear-gradient(90deg, rgba(59,130,246,0.15), rgba(245,158,11,0.15)); border-left: 3px solid var(--accent-win); color: #fff; }
+.nav-check { margin-left: auto; color: var(--success); font-size: .8rem; }
+
+.prof-name-sidebar { font-size: .75rem; font-weight: 600; color: #93c5fd; padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
+.sidebar-footer { padding: 14px 18px; border-top: 1px solid var(--border); }
+.progress-label { font-size: .72rem; color: var(--text-muted); margin-bottom: 5px; }
+.progress-bar-wrap { background: rgba(255,255,255,0.1); border-radius: 4px; height: 6px; }
+.progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent-win), var(--accent-lin)); border-radius: 4px; width: 0%; transition: width .5s; }
+.progress-pct { font-size: .72rem; color: var(--text-muted); text-align: right; margin-top: 4px; }
+
+#main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+.top-header { position: sticky; top: 0; background: rgba(15, 17, 26, 0.9); backdrop-filter: blur(10px); display: flex; align-items: center; gap: 12px; padding: 14px 24px; border-bottom: 1px solid var(--border); z-index: 50; }
+.header-title { font-weight: 700; font-size: .95rem; }
+.header-center { flex: 1; display: flex; justify-content: center; }
+.prof-tag { font-size: .78rem; font-weight: 600; background: rgba(59,130,246,0.1); padding: 4px 12px; border-radius: 99px; border: 1px solid rgba(59,130,246,0.3); color: #93c5fd; }
+.header-badges { display: flex; gap: 8px; }
+.badge-live { font-size: .7rem; font-weight: 600; background: rgba(16,185,129,0.15); color: #34d399; padding: 4px 10px; border-radius: 99px; border: 1px solid rgba(16,185,129,0.3); }
+
+/* ─── TABS & CARDS ─── */
+.tab-content { display: none; padding: 32px 32px 60px; animation: fadeIn .3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:none} }
+.section-hero { margin-bottom: 24px; }
+.section-hero h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+.section-hero .lead { color: var(--text-secondary); font-size: .96rem; line-height: 1.6; max-width: 700px; }
+
+.analogy-card { display: flex; gap: 16px; background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 24px; }
+.analogy-icon { font-size: 2.2rem; }
+.analogy-title { font-weight: 700; color: #93c5fd; margin-bottom: 6px; text-transform: uppercase; font-size: .85rem; letter-spacing: .05em; }
+.analogy-body p { font-size: .9rem; color: var(--text-secondary); line-height: 1.6; }
+
+.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 24px; overflow: hidden; }
+.card-header { padding: 14px 20px; border-bottom: 1px solid var(--border); font-weight: 600; font-size: .9rem; background: rgba(255,255,255,0.02); }
+
+/* ─── ACTIVITIES ─── */
+.activity-section { background: var(--bg-elevated); border: 2px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 24px; }
+.activity-header { display: flex; align-items: center; gap: 10px; padding: 14px 20px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.03); font-weight: 700; font-size: .95rem; }
+.act-title { flex: 1; }
+.act-badge { font-size: .75rem; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); color: var(--success); padding: 2px 8px; border-radius: 99px; }
+.act-desc { padding: 14px 20px 0; font-size: .88rem; color: var(--text-secondary); }
+.activity-body { padding: 18px 20px 20px; }
+.act-feedback { margin-top: 15px; padding: 10px 14px; border-radius: 8px; font-size: .86rem; }
+.act-feedback.correct { background: rgba(16,185,129,0.1); border-left: 3px solid var(--success); }
+.act-feedback.wrong { background: rgba(239,68,68,0.1); border-left: 3px solid var(--danger); }
+
+/* ─── BUTTONS ─── */
+.btn { display: inline-flex; align-items: center; justify-content: center; padding: 8px 16px; border-radius: 6px; border: none; font-size: .85rem; font-weight: 600; font-family: var(--font-ui); cursor: pointer; transition: all .2s; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary { background: var(--accent-win); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: #2563eb; }
+.btn-secondary { background: rgba(255,255,255,0.1); color: var(--text-primary); border: 1px solid var(--border); }
+.btn-secondary:hover:not(:disabled) { background: rgba(255,255,255,0.15); }
+.btn-prof { background: rgba(245,158,11,0.15); color: var(--warning); border: 1px solid rgba(245,158,11,0.4); padding: 5px 12px; font-size: .75rem; }
+
+/* ─── DISK MANAGER ─── */
+.disk-visual { display: flex; height: 60px; background: #000; border: 2px solid var(--border); border-radius: 8px; overflow: hidden; margin: 20px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+.partition { display: flex; flex-direction: column; align-items: center; justify-content: center; transition: width .4s ease; border-right: 2px solid #000; }
+.partition:last-child { border-right: none; }
+.part-label { font-size: .75rem; font-weight: 700; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 4px; }
+.part-size { font-size: .7rem; color: rgba(255,255,255,0.8); font-family: var(--font-code); }
+.win-part { background: linear-gradient(180deg, #1d4ed8, #1e3a8a); }
+.free-part { background: repeating-linear-gradient(45deg, #1f2937, #1f2937 10px, #111827 10px, #111827 20px); }
+.linux-part { background: linear-gradient(180deg, #b45309, #78350f); }
+.disk-controls { padding: 0 20px 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+.disk-status { padding: 12px; border-radius: 6px; font-size: .88rem; font-weight: 500; }
+.disk-status.pending { background: rgba(255,255,255,0.05); border-left: 3px solid var(--border); }
+.disk-status.success { background: rgba(16,185,129,0.1); border-left: 3px solid var(--success); color: var(--success); }
+
+/* ─── BIOS SIMULATOR ─── */
+.bios-container { background: #0000aa; color: #fff; font-family: var(--font-code); font-size: 14px; border-radius: 8px; border: 4px solid #ccc; padding: 2px; }
+.bios-header { text-align: center; background: #c0c0c0; color: #000; font-weight: 700; padding: 4px; font-size: 12px; }
+.bios-nav { display: flex; justify-content: space-between; padding: 6px 20px; border-bottom: 2px solid #fff; }
+.bios-nav-item.active { background: #fff; color: #0000aa; }
+.bios-body { display: flex; height: 260px; }
+.bios-col-left { flex: 2; padding: 10px; border-right: 2px solid #fff; }
+.bios-col-right { flex: 1; padding: 10px; color: #a8a8ff; font-size: 13px; }
+.bios-option-row { display: flex; justify-content: space-between; padding: 4px; cursor: pointer; }
+.bios-option-row:hover { background: #fff; color: #0000aa; }
+.bios-opt-val { color: #ffff55; }
+.bios-option-row:hover .bios-opt-val { color: #0000aa; }
+.bios-section-title { color: #55ffff; margin-bottom: 8px; font-weight: 700; }
+.bios-boot-list { border: 1px dashed #55ffff; padding: 4px; }
+.bios-boot-item { padding: 4px; cursor: grab; }
+.bios-boot-item:hover { background: #fff; color: #0000aa; }
+.bios-hint { color: #a8a8ff; font-size: 11px; margin-top: 10px; }
+.bios-footer { border-top: 2px solid #fff; padding: 6px 10px; font-size: 12px; }
+.bios-checklist { list-style: none; padding: 0; font-size: .88rem; display: flex; flex-direction: column; gap: 8px; }
+
+/* ─── GRUB SIMULATOR ─── */
+.grub-simulator { background: #000; border: 4px solid #333; border-radius: 8px; padding: 20px; font-family: var(--font-code); color: #ccc; }
+.grub-box { max-width: 600px; margin: 0 auto; }
+.grub-title { text-align: center; margin-bottom: 20px; font-weight: 700; color: #fff; }
+.grub-border { border: 2px solid #aaa; padding: 10px; }
+.grub-menu { display: flex; flex-direction: column; gap: 4px; }
+.grub-item { padding: 4px 10px; }
+.grub-item.active { background: #aaa; color: #000; }
+.grub-footer { margin-top: 20px; font-size: .8rem; color: #888; }
+.grub-timer { margin-top: 20px; text-align: center; }
+.grub-controls { display: flex; gap: 10px; margin-top: 10px; }
+
+/* ─── PROFESSOR MODAL (Reused styles) ─── */
+.prof-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 200; }
+.prof-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 500px; max-width: 90vw; background: var(--bg-elevated); border: 1px solid var(--warning); border-radius: var(--radius-lg); z-index: 201; display: flex; flex-direction: column; }
+.prof-modal-header { display: flex; padding: 16px 20px; border-bottom: 1px solid var(--border); align-items: center; justify-content: space-between; color: var(--warning); font-weight: 700; }
+.close-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.2rem; }
+.pass-prompt { padding: 40px; text-align: center; display: flex; flex-direction: column; gap: 15px; align-items: center; }
+.pass-input { background: var(--bg-card); border: 1px solid var(--border); padding: 8px 12px; color: #fff; border-radius: 6px; text-align: center; }
+.prof-tabs { display: flex; gap: 5px; padding: 10px 15px; border-bottom: 1px solid var(--border); }
+.prof-tab { background: none; border: 1px solid var(--border); color: var(--text-muted); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: .8rem; }
+.prof-tab.active { background: rgba(245,158,11,0.1); border-color: var(--warning); color: var(--warning); }
+.prof-tab-content { padding: 20px; }
+.prof-section-title { font-size: .75rem; text-transform: uppercase; color: var(--warning); margin-bottom: 10px; font-weight: 700; }
+.prof-item { font-size: .85rem; line-height: 1.5; margin-bottom: 8px; color: var(--text-secondary); }
+.prof-tip { background: rgba(245,158,11,0.1); border-left: 3px solid var(--warning); padding: 8px 12px; font-size: .85rem; }
+
+/* ─── FOOTER ─── */
+.app-footer { margin-top: auto; padding: 20px; text-align: center; font-size: .75rem; color: var(--text-muted); display: flex; justify-content: space-around; border-top: 1px solid var(--border); }

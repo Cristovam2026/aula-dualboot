@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dualboot Lab — Prof. Cristovam Azevedo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">🐧</div>
+      <div>
+        <div class="brand-title">Dualboot Lab</div>
+        <div class="brand-sub">Sistemas Operacionais</div>
+      </div>
+    </div>
+
+    <ul class="nav-list">
+      <li class="nav-item active" data-tab="overview">
+        <span class="nav-icon">🏠</span><span>O que é Dualboot?</span>
+        <span class="nav-check" id="nc-overview"></span>
+      </li>
+      <li class="nav-item" data-tab="disk">
+        <span class="nav-icon">💽</span><span>Particionamento</span>
+        <span class="nav-check" id="nc-disk"></span>
+      </li>
+      <li class="nav-item" data-tab="bios">
+        <span class="nav-icon">⚙️</span><span>Simulador de BIOS</span>
+        <span class="nav-check" id="nc-bios"></span>
+      </li>
+      <li class="nav-item" data-tab="grub">
+        <span class="nav-icon">🖥️</span><span>O Bootloader (GRUB)</span>
+        <span class="nav-check" id="nc-grub"></span>
+      </li>
+      <li class="nav-item" data-tab="quiz">
+        <span class="nav-icon">🏆</span><span>Quiz Final</span>
+        <span class="nav-check" id="nc-quiz"></span>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="prof-name-sidebar">👨‍🏫 Prof. Cristovam Azevedo</div>
+      <div class="progress-label">Progresso da turma</div>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="globalProgress"></div></div>
+      <div class="progress-pct" id="progressPct">0%</div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main id="main">
+    <header class="top-header">
+      <button id="menuToggle" class="menu-btn" onclick="toggleSidebar()">☰</button>
+      <div class="header-title" id="headerTitle">O que é Dualboot?</div>
+      <div class="header-center"><span class="prof-tag">👨‍🏫 Prof. Cristovam Azevedo</span></div>
+      <div class="header-badges">
+        <div class="badge badge-live">🟢 Ao Vivo</div>
+        <button class="btn btn-prof" onclick="openProfModal()">🔐 Modo Professor</button>
+      </div>
+    </header>
+
+    <!-- TAB 1: VISÃO GERAL -->
+    <section class="tab-content active" id="tab-overview">
+      <div class="section-hero">
+        <h1>Dois Sistemas, Uma Máquina</h1>
+        <p class="lead">O <strong>Dualboot</strong> permite instalar dois ou mais Sistemas Operacionais (como Windows e Linux) no mesmo computador. Ao ligar a máquina, você escolhe qual deseja usar.</p>
+      </div>
+
+      <div class="analogy-card">
+        <div class="analogy-icon">🏠</div>
+        <div class="analogy-body">
+          <div class="analogy-title">Analogia: A Casa Dividida</div>
+          <p>Imagine o seu HD (disco) como um <strong>terreno grande</strong>. Inicialmente, o Windows ocupa o terreno todo com uma casa só. Fazer Dualboot é como colocar um muro no meio do terreno e construir uma segunda casa para o Linux. As duas casas ficam no mesmo endereço físico, mas os moradores não se misturam. A portaria (GRUB) pergunta em qual casa você quer entrar quando chega.</p>
+        </div>
+      </div>
+
+      <!-- Activity 1 -->
+      <div class="activity-section" id="act-overview">
+        <div class="activity-header">
+          <span class="act-icon">📝</span>
+          <span class="act-title">Atividade — Mitos e Verdades do Dualboot</span>
+          <span class="act-badge" id="badge-overview" style="display:none">✅ Concluída</span>
+        </div>
+        <p class="act-desc">Muitos iniciantes têm medo do Dualboot. Avalie as afirmações abaixo como "Mito" ou "Verdade".</p>
+        <div class="activity-body" id="actBody-overview"></div>
+      </div>
+    </section>
+
+    <!-- TAB 2: DISCO -->
+    <section class="tab-content" id="tab-disk">
+      <div class="section-hero">
+        <h1>Particionamento de Disco</h1>
+        <p class="lead">Antes de instalar o Linux, precisamos "encolher" a casa do Windows para abrir espaço. Isso se chama Reduzir Volume (Shrink).</p>
+      </div>
+
+      <div class="analogy-card">
+        <div class="analogy-icon">✂️</div>
+        <div class="analogy-body">
+          <div class="analogy-title">Analogia: Fatiando uma Pizza</div>
+          <p>O disco é como uma pizza grande que veio inteira para o Windows (C:). Nós precisamos cortar uma fatia (Espaço Não Alocado) para instalar os ingredientes do Linux nela. Se não separarmos o espaço antes, o Linux pode sobrescrever os arquivos do Windows!</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">💽 Gerenciador de Disco Virtual</div>
+        <div class="disk-manager">
+          <div class="disk-visual" id="diskVisual">
+            <div class="partition win-part" id="partWin" style="width: 100%;">
+              <span class="part-label">Windows (C:)</span>
+              <span class="part-size" id="sizeWin">500 GB</span>
+            </div>
+            <div class="partition free-part" id="partFree" style="width: 0%; display:none;">
+              <span class="part-label">Não Alocado</span>
+              <span class="part-size" id="sizeFree">0 GB</span>
+            </div>
+            <div class="partition linux-part" id="partLinux" style="width: 0%; display:none;">
+              <span class="part-label">Linux (/)</span>
+              <span class="part-size" id="sizeLinux">0 GB</span>
+            </div>
+          </div>
+          
+          <div class="disk-controls" id="diskControls">
+            <!-- Controls injected via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity 2 -->
+      <div class="activity-section" id="act-disk">
+        <div class="activity-header">
+          <span class="act-icon">🎯</span>
+          <span class="act-title">Missão — Preparar o Terreno</span>
+          <span class="act-badge" id="badge-disk" style="display:none">✅ Concluída</span>
+        </div>
+        <p class="act-desc">Sua missão: você tem um HD de 500GB. Reduza a partição do Windows em 100GB. Em seguida, crie uma partição para o Linux usando o espaço livre.</p>
+        <div class="activity-body" id="actBody-disk">
+          <div id="diskStatusMsg" class="disk-status pending">Aguardando ações no Gerenciador de Disco...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: BIOS -->
+    <section class="tab-content" id="tab-bios">
+      <div class="section-hero">
+        <h1>A Fronteira: BIOS / UEFI</h1>
+        <p class="lead">Para instalar o segundo sistema, o computador precisa ler o Pendrive de instalação antes do HD. Configuramos isso na BIOS/UEFI.</p>
+      </div>
+
+      <div class="analogy-card">
+        <div class="analogy-icon">🚪</div>
+        <div class="analogy-body">
+          <div class="analogy-title">Analogia: O Porteiro do Prédio</div>
+          <p>A BIOS é o porteiro. Por padrão, ele tem ordem (Boot Priority) de deixar apenas o "Sr. Windows" (HD) entrar. Para instalar o Linux, precisamos avisar o porteiro para atender primeiro o "Visitante" (Pendrive USB). Além disso, precisamos desativar o "Segurança Rigorosa" (Secure Boot) que barra sistemas operacionais que não têm a "assinatura da Microsoft".</p>
+        </div>
+      </div>
+
+      <!-- BIOS Simulator -->
+      <div class="bios-container">
+        <div class="bios-header">
+          <span class="bios-title">Aptio Setup Utility - Copyright (C) 2026 American Megatrends, Inc.</span>
+        </div>
+        <div class="bios-nav">
+          <span class="bios-nav-item">Main</span>
+          <span class="bios-nav-item">Advanced</span>
+          <span class="bios-nav-item active">Boot</span>
+          <span class="bios-nav-item">Security</span>
+          <span class="bios-nav-item">Save & Exit</span>
+        </div>
+        <div class="bios-body">
+          <div class="bios-col-left">
+            <div class="bios-option-row">
+              <span class="bios-opt-name">Fast Boot</span>
+              <span class="bios-opt-val" id="biosFastBoot" onclick="toggleBiosOpt('Fast Boot', ['Enabled','Disabled'])">[Enabled]</span>
+            </div>
+            <div class="bios-option-row">
+              <span class="bios-opt-name">Secure Boot Control</span>
+              <span class="bios-opt-val" id="biosSecureBoot" onclick="toggleBiosOpt('Secure Boot Control', ['Enabled','Disabled'])">[Enabled]</span>
+            </div>
+            <br>
+            <div class="bios-section-title">Boot Option Priorities</div>
+            <div class="bios-boot-list" id="biosBootList">
+              <div class="bios-boot-item" draggable="true" data-device="Windows Boot Manager">Boot Option #1: [Windows Boot Manager (HD)]</div>
+              <div class="bios-boot-item" draggable="true" data-device="USB Flash Drive">Boot Option #2: [USB Flash Drive]</div>
+              <div class="bios-boot-item" draggable="true" data-device="CD/DVD ROM">Boot Option #3: [CD/DVD ROM]</div>
+            </div>
+            <p class="bios-hint">↑ Arraste os itens para mudar a ordem de Boot</p>
+          </div>
+          <div class="bios-col-right">
+            <div class="bios-help">
+              Use as setas para selecionar.<br>
+              Pressione Enter para alterar.<br>
+              <strong>Secure Boot:</strong> Prevê execução de SO não autorizados.<br>
+              <strong>Boot Priority:</strong> Dispositivo que inicia primeiro.
+            </div>
+          </div>
+        </div>
+        <div class="bios-footer">
+          F10: Save and Exit &nbsp;|&nbsp; ESC: Exit
+        </div>
+      </div>
+
+      <!-- Activity 3 -->
+      <div class="activity-section" id="act-bios" style="margin-top: 20px;">
+        <div class="activity-header">
+          <span class="act-icon">⚙️</span>
+          <span class="act-title">Atividade — Configure a BIOS</span>
+          <span class="act-badge" id="badge-bios" style="display:none">✅ Concluída</span>
+        </div>
+        <p class="act-desc">Para darmos boot no pendrive de instalação do Linux, você deve configurar a tela azul acima. Cumpra os 3 requisitos para passar.</p>
+        <div class="activity-body" id="actBody-bios">
+          <ul class="bios-checklist">
+            <li id="chk-secure">❌ Secure Boot deve estar <strong>Disabled</strong></li>
+            <li id="chk-fast">❌ Fast Boot deve estar <strong>Disabled</strong></li>
+            <li id="chk-usb">❌ USB Flash Drive deve ser a <strong>Boot Option #1</strong></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: GRUB -->
+    <section class="tab-content" id="tab-grub">
+      <div class="section-hero">
+        <h1>GRUB: O Gerenciador de Boot</h1>
+        <p class="lead">Depois que tudo está instalado, quem manda na inicialização é o GRUB (GRand Unified Bootloader). É a famosa "telinha preta" que aparece ao ligar o PC.</p>
+      </div>
+
+      <!-- GRUB Simulator -->
+      <div class="grub-simulator">
+        <div class="grub-box">
+          <div class="grub-title">GNU GRUB version 2.06</div>
+          <div class="grub-border">
+            <div class="grub-menu" id="grubMenu">
+              <div class="grub-item active" data-os="ubuntu">*Ubuntu</div>
+              <div class="grub-item" data-os="advanced"> Advanced options for Ubuntu</div>
+              <div class="grub-item" data-os="windows"> Windows Boot Manager (on /dev/sda1)</div>
+              <div class="grub-item" data-os="uefi"> UEFI Firmware Settings</div>
+            </div>
+          </div>
+          <div class="grub-footer">
+            Use the ↑ and ↓ keys to select which entry is highlighted.<br>
+            Press enter to boot the selected OS, `e' to edit the commands...
+          </div>
+          <div class="grub-timer">The highlighted entry will be executed automatically in <span id="grubCount">10</span>s.</div>
+        </div>
+      </div>
+
+      <!-- Activity 4 -->
+      <div class="activity-section" id="act-grub" style="margin-top:20px;">
+        <div class="activity-header">
+          <span class="act-icon">🕹️</span>
+          <span class="act-title">Atividade — Interagindo com o GRUB</span>
+          <span class="act-badge" id="badge-grub" style="display:none">✅ Concluída</span>
+        </div>
+        <p class="act-desc">Clique nas setas do seu teclado (ou use os botões abaixo) para navegar no GRUB acima. Dê boot no sistema Windows para completar a atividade.</p>
+        <div class="activity-body" id="actBody-grub">
+           <div class="grub-controls">
+             <button class="btn btn-secondary" onclick="grubMove(-1)">⬆ Subir</button>
+             <button class="btn btn-secondary" onclick="grubMove(1)">⬇ Descer</button>
+             <button class="btn btn-primary" onclick="grubEnter()">↵ Enter</button>
+           </div>
+           <div id="grubFeedback" class="act-feedback" style="display:none; margin-top: 15px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: QUIZ -->
+    <section class="tab-content" id="tab-quiz">
+      <div class="section-hero">
+        <h1>🏆 Quiz Final</h1>
+        <p class="lead">Teste seus conhecimentos sobre instalação e gerenciamento de Dualboot.</p>
+      </div>
+
+      <div class="quiz-layout">
+        <div class="card quiz-card" id="quizCard">
+          <div class="quiz-progress-header">
+            <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="quizProgFill"></div></div>
+            <div class="quiz-prog-text" id="quizProgText">Questão 1 de 5</div>
+          </div>
+          <div class="question-area" id="questionArea"></div>
+          <div class="quiz-nav">
+            <button class="btn btn-secondary" id="btnPrevQ" onclick="prevQuestion()" disabled>← Anterior</button>
+            <div class="quiz-score-inline" id="quizScoreInline"></div>
+            <button class="btn btn-primary" id="btnNextQ" onclick="nextQuestion()" disabled>Próxima →</button>
+          </div>
+        </div>
+        <div class="card quiz-results-card" id="quizResults" style="display:none;">
+          <div class="results-icon">🏆</div>
+          <h2 id="resultsTitle"></h2>
+          <div class="results-score" id="resultsScore"></div>
+          <div class="results-bar-wrap"><div class="results-bar" id="resultsBar"></div></div>
+          <div class="results-feedback" id="resultsFeedback"></div>
+          <div class="results-prof">📋 Prof. Cristovam Azevedo</div>
+          <button class="btn btn-primary btn-lg" onclick="restartQuiz()">🔄 Refazer Quiz</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="app-footer">
+      <span>Dualboot Lab — Sistemas Operacionais</span>
+      <span>👨‍🏫 Professor: Cristovam Azevedo</span>
+      <span>2026</span>
+    </footer>
+  </main>
+
+  <!-- PROFESSOR MODAL -->
+  <div id="profOverlay" class="prof-overlay" onclick="closeProfModal()" style="display:none;"></div>
+  <div id="profModal" class="prof-modal" style="display:none;">
+    <div class="prof-modal-header">
+      <div class="prof-modal-title">🔐 Modo Professor — Cristovam Azevedo</div>
+      <button class="close-btn" onclick="closeProfModal()">✕</button>
+    </div>
+    <div id="profPassScreen">
+      <div class="pass-prompt">
+        <div class="pass-icon">🔒</div>
+        <p>Digite a senha do professor para acessar o painel:</p>
+        <input type="password" id="profPassInput" class="pass-input" placeholder="Senha..." onkeydown="if(event.key==='Enter')checkProfPass()" />
+        <button class="btn btn-primary" onclick="checkProfPass()">Entrar</button>
+        <div class="pass-error" id="passError" style="display:none;">❌ Senha incorreta. Tente novamente.</div>
+      </div>
+    </div>
+    <div id="profContent" style="display:none;">
+      <div class="prof-tabs">
+        <button class="prof-tab active" data-ptab="roteiro" onclick="switchProfTab('roteiro')">📋 Roteiro</button>
+        <button class="prof-tab" data-ptab="gabarito" onclick="switchProfTab('gabarito')">🗝️ Gabarito</button>
+        <button class="prof-tab" data-ptab="atencao" onclick="switchProfTab('atencao')">⚠️ Atenção</button>
+      </div>
+      <div class="prof-tab-content" id="ptab-roteiro">
+         <div class="prof-section-title">Sugestão de Roteiro da Aula (Dualboot)</div>
+         <div class="prof-item"><strong>1. Conceito:</strong> A analogia da casa é ótima. Reforce que arquivos do Windows não acessam nativamente partição Linux, mas o Linux consegue ler arquivos do Windows.</div>
+         <div class="prof-item"><strong>2. Particionamento:</strong> Faça os alunos entenderem por que precisamos "encolher" o disco antes de instalar (para não apagar o Windows sem querer).</div>
+         <div class="prof-item"><strong>3. BIOS:</strong> Explique que Fast Boot pula a tela da BIOS e Secure Boot bloqueia sistemas sem chaves autorizadas.</div>
+      </div>
+      <div class="prof-tab-content" id="ptab-gabarito" style="display:none;">
+         <div class="prof-section-title">Gabarito das Atividades</div>
+         <div class="prof-item"><strong>Mitos e Verdades:</strong> "Deixa o PC lento" (Mito), "Precisa de dois HDs" (Mito), "Risco de perder dados" (Verdade).</div>
+         <div class="prof-item"><strong>BIOS:</strong> Fast Boot (Disabled), Secure Boot (Disabled), Boot #1 (USB).</div>
+      </div>
+      <div class="prof-tab-content" id="ptab-atencao" style="display:none;">
+         <div class="prof-section-title">Atenção com Iniciantes</div>
+         <div class="prof-tip">Muitos apagam o bootloader do Windows por acidente. Destaque a importância da partição "EFI" do Windows.</div>
+         <div class="prof-tip">Lembrete para o mundo real: backup antes de qualquer particionamento de disco físico!</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
